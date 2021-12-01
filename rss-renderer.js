@@ -41,12 +41,13 @@ function rssRenderer(cfgs = {}, link = "") {
                 html += `<h3>${rss.description}</h3>`;
               }
               // 内容渲染
-              rss.item.forEach((e) => {
-                let div = "";
-                div += `<div class="title"><a href="${e.link}">${e.title}</a></div>`;
-                div += `${e.description}`;
-                html += `<div>${div}</div>`;
-              });
+              try {
+                rss.item.forEach((e) => {
+                  html += `<div>${rssRendererSolo(e)}</div>`;
+                });
+              } catch (error) {
+                html += `<div>${rssRendererSolo(rss.item)}</div>`;
+              }
               // 标题渲染
               if (dcfg.renderTitle) {
                 document.querySelector("head>title").innerText = rss.title;
@@ -62,4 +63,11 @@ function rssRenderer(cfgs = {}, link = "") {
         });
     });
   }
+}
+
+function rssRendererSolo(e) {
+  let div = "";
+  div += `<div class="title"><a href="${e.link}">${e.title}</a></div>`;
+  div += `${e.description}`;
+  return div;
 }
