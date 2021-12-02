@@ -1,3 +1,7 @@
+// rss-renderer.js By 大泽
+// 仓库地址
+// https://gitee.com/daze456/js-rss-renderer
+// https://github.com/dz-io/js-rss-renderer
 function rssRenderer(cfgs = {}, link = "") {
   // 默认配置
   const dcfg = {
@@ -41,11 +45,17 @@ function rssRenderer(cfgs = {}, link = "") {
                 html += `<h3>${rss.description}</h3>`;
               }
               // 内容渲染
+              // 空RSS报错
+              if (!rss.item) {
+                reject(new Error("Rss is Empty"));
+              }
               try {
+                // 多个项目按数组处理
                 rss.item.forEach((e) => {
                   html += `<div>${rssRendererSolo(e)}</div>`;
                 });
               } catch (error) {
+                // 单个项目直接处理
                 html += `<div>${rssRendererSolo(rss.item)}</div>`;
               }
               // 标题渲染
